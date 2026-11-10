@@ -19,8 +19,25 @@ $ErrorActionPreference = 'Stop'
 $repo = Join-Path $PSScriptRoot '..'
 Set-Location $repo
 
-$node = 'C:\Users\19393\.dsh\dsh-runtimes\dsh-next-primary-runtime\dependencies\node\bin\node.exe'
-if (-not (Test-Path $node)) { $node = 'node' }
+# 找 Node：先用 PATH 里的，再退到 DSH 自带的运行时（按当前用户拼路径，不写死用户名）
+function Resolve-Node {
+    $cmd = Get-Command node -ErrorAction SilentlyContinue
+    if ($cmd) { return $cmd.Source }
+    $candidates = @(
+        (Join-Path $env:USERPROFILE '.dsh\dsh-runtimes\dsh-next-primary-runtime\dependencies\node\bin\node.exe'),
+        (Join-Path $env:USERPROFILE '.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\node\bin\node.exe')
+    )
+    foreach ($candidate in $candidates) {
+        if (Test-Path $candidate) { return $candidate }
+    }
+    return $null
+}
+
+$node = Resolve-Node
+if ($null -eq $node) {
+    Write-Host '找不到 Node：请把 node 加进 PATH，或确认 DSH 运行时已安装' -ForegroundColor Red
+    exit 1
+}
 
 if ($Message -eq '') {
     Write-Host '缺少 -Message：一句话说明这次改了什么' -ForegroundColor Red

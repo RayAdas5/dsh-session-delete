@@ -9,10 +9,26 @@
 # 也可以在文件资源管理器里右键 → 使用 PowerShell 运行。
 
 $ErrorActionPreference = 'Stop'
-$exe = 'C:\DSH\DSH NEXT\DSH NEXT.exe'
+# 找 DSH 可执行文件：先在运行的进程里取（最准），再查常见安装位置。
+# 不要写死路径 —— 换台电脑装的位置大概率不一样。
+function Resolve-DshExe {
+    $proc = Get-Process -Name 'DSH NEXT','DeepSeek Harness' -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($proc -and $proc.Path -and (Test-Path $proc.Path)) { return $proc.Path }
+    $candidates = @(
+        'C:\DSH\DSH NEXT\DSH NEXT.exe',
+        (Join-Path $env:LOCALAPPDATA 'Programs\DSH NEXT\DSH NEXT.exe'),
+        (Join-Path $env:ProgramFiles 'DSH NEXT\DSH NEXT.exe'),
+        (Join-Path ${env:ProgramFiles(x86)} 'DSH NEXT\DSH NEXT.exe')
+    )
+    foreach ($candidate in $candidates) {
+        if ($candidate -and (Test-Path $candidate)) { return $candidate }
+    }
+    return $null
+}
 
-if (-not (Test-Path $exe)) {
-    Write-Host "找不到 DSH：$exe" -ForegroundColor Red
+$exe = Resolve-DshExe
+if ($null -eq $exe) {
+    Write-Host '找不到 DSH 可执行文件，请手动指定路径或直接手动重启。' -ForegroundColor Red
     exit 1
 }
 
