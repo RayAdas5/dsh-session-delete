@@ -136,7 +136,7 @@ globalThis.window = {
 new Function(source.replace(/^window\.__ModuleLoader__\.load\(/, 'globalThis.__capture__.load('))()
 
 assert.ok(captured !== null, 'bundle 没有调用 __ModuleLoader__.load')
-assert.equal(captured.id, 'dsh-session-delete', 'bundle id 不对')
+assert.equal(captured.id, 'dsh-session-delete-next', 'bundle id 必须与包名一致（否则旧包会撞车）')
 
 const mod = captured.factory(requireModule)
 assert.equal(mod.name, 'session-delete')

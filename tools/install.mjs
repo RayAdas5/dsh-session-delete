@@ -59,7 +59,10 @@ if (!dryRun) {
 if (!dryRun) {
   mkdirSync(target, { recursive: true })
   for (const name of readdirSync(source)) {
+    // 只复制运行需要的东西：.git / dist / tests / tools 都不该进安装目录
+    // （.git 里有只读对象，之前复制它直接把安装过程搞崩了）
     if (name === 'node_modules' || name === 'tests' || name === 'tools') continue
+    if (name === '.git' || name === 'dist') continue
     const from = join(source, name)
     const to = join(target, name)
     const info = statSync(from)

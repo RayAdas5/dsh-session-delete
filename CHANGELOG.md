@@ -2,6 +2,10 @@
 
 本插件的版本历史。版本号跟着「用户能感知的能力」走，不跟内部重构走。
 
+## 1.0.2 — 2026-11-11
+
+- 修复 client bundle id 与包名不一致：旧包未清理时会 duplicate factory registration，导致 DSH 无法启动
+
 ## 1.0.1 — 2026-11-11
 
 - 补全发布元数据（peerDependencies / engines / publishConfig），插件可以打包分发了

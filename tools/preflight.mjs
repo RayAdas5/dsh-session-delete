@@ -70,7 +70,7 @@ const clientEntry = join(linkDir, 'lib', 'client.js')
 assert.ok(existsSync(clientEntry), '缺少 lib/client.js')
 const clientSource = readFileSync(clientEntry, 'utf8')
 assert.ok(clientSource.includes('window.__ModuleLoader__.load('), 'client 入口不是 ModuleLoader bundle')
-assert.ok(clientSource.includes("id: 'dsh-session-delete'"), 'client bundle id 不对')
+assert.ok(clientSource.includes("id: 'dsh-session-delete-next'"), 'client bundle id 必须与包名一致')
 ok('client 入口是合法 ModuleLoader bundle')
 
 // 5) 补丁层
