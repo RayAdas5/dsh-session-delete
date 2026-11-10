@@ -28,7 +28,9 @@ import { fileURLToPath } from 'node:url'
 const here = dirname(fileURLToPath(import.meta.url))
 const source = resolve(here, '..')
 const home = process.env.DSH_HOME || resolve(process.env.USERPROFILE || process.env.HOME || '', '.dsh')
-const pluginName = 'dsh-session-delete'
+const pluginName = 'dsh-session-delete-next'
+/** 改名前用过的包名：装新名时顺手把旧引用清掉，否则 DSH 会因为找不到包而卡启动。 */
+const LEGACY_NAMES = ['dsh-session-delete']
 const target = join(home, 'plugins', pluginName)
 const profileDir = join(home, 'profiles', 'desktop')
 const profileJsonPath = join(profileDir, 'package.json')
@@ -105,10 +107,26 @@ function isJunction(path) {
 // 4) 改 profile package.json
 const profile = JSON.parse(readFileSync(profileJsonPath, 'utf8'))
 if (profile.dependencies === undefined || profile.dependencies === null) profile.dependencies = {}
+
+// 先清掉改名前的旧引用：留着旧包名、目录却已经不在，DSH 会卡在启动阶段
+for (const legacy of LEGACY_NAMES) {
+  if (Object.prototype.hasOwnProperty.call(profile.dependencies, legacy)) {
+    delete profile.dependencies[legacy]
+    log('已移除 dependencies 里的旧包名 ' + legacy)
+  }
+}
+
 profile.dependencies[pluginName] = 'link:../../plugins/' + pluginName
 
 const bundles = profile.dsh?.profile?.bundles
 if (!Array.isArray(bundles)) fail('profile 里没有 dsh.profile.bundles 数组')
+for (const legacy of LEGACY_NAMES) {
+  const index = bundles.indexOf(legacy)
+  if (index >= 0) {
+    bundles.splice(index, 1)
+    log('已从 bundles 里移除旧包名 ' + legacy)
+  }
+}
 if (!bundles.includes(pluginName)) bundles.push(pluginName)
 
 if (!dryRun) {

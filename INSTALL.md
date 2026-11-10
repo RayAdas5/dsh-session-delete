@@ -1,6 +1,6 @@
 # 安装到其他 DSH 客户端
 
-这个包是标准 npm 包（`dsh-session-delete-<version>.tgz`），宿主是 **DSH 0.2.1-rc.2**，
+这个包是标准 npm 包（`dsh-session-delete-next-<version>.tgz`），宿主是 **DSH 0.2.1-rc.2**，
 需要 Node ≥ 20（DSH 自带运行时即可）。
 
 ## 包里有什么
@@ -20,13 +20,13 @@ package/CHANGELOG.md
 ## 方式 A：`dsh plugin` 命令（有 CLI 时最快）
 
 ```sh
-dsh plugin --profile desktop add /绝对路径/dsh-session-delete-1.0.1.tgz
+dsh plugin --profile desktop add /绝对路径/dsh-session-delete-next-1.0.1.tgz
 ```
 
 装完**重启 DSH**。卸载：
 
 ```sh
-dsh plugin --profile desktop remove dsh-session-delete
+dsh plugin --profile desktop remove dsh-session-delete-next
 ```
 
 > 不同 DSH 版本的 profile 名可能是 `desktop` 或 `web`，用你实际的 profile 目录名。
@@ -38,7 +38,7 @@ dsh plugin --profile desktop remove dsh-session-delete
 **1. 解压**
 
 ```sh
-tar -xzf dsh-session-delete-1.0.1.tgz
+tar -xzf dsh-session-delete-next-1.0.1.tgz
 ```
 
 得到一个 `package/` 目录。
@@ -46,7 +46,7 @@ tar -xzf dsh-session-delete-1.0.1.tgz
 **2. 放进 profile 的 node_modules**
 
 ```text
-<DSH_HOME>/profiles/desktop/node_modules/dsh-session-delete/
+<DSH_HOME>/profiles/desktop/node_modules/dsh-session-delete-next/
 ```
 
 `<DSH_HOME>` 一般是 `C:\Users\<你>\.dsh`；profile 目录名可能是 `desktop` 或 `web`，
@@ -55,7 +55,7 @@ tar -xzf dsh-session-delete-1.0.1.tgz
 Windows 上可以复制，也可以建目录联接：
 
 ```powershell
-New-Item -ItemType Junction -Path "$env:USERPROFILE\.dsh\profiles\desktop\node_modules\dsh-session-delete" -Target "C:\path\to\package"
+New-Item -ItemType Junction -Path "$env:USERPROFILE\.dsh\profiles\desktop\node_modules\dsh-session-delete-next" -Target "C:\path\to\package"
 ```
 
 **3. 在 profile 的 `package.json` 里登记 bundle**
@@ -68,7 +68,7 @@ New-Item -ItemType Junction -Path "$env:USERPROFILE\.dsh\profiles\desktop\node_m
     "profile": {
       "bundles": [
         "...",
-        "dsh-session-delete"
+        "dsh-session-delete-next"
       ]
     }
   }
@@ -89,8 +89,8 @@ Host 半侧只在启动时装载。重启后：
 
 ## 卸载
 
-1. 从 `dsh.profile.bundles` 里删掉 `"dsh-session-delete"`；
-2. 删掉 `node_modules/dsh-session-delete`（或那个 junction）；
+1. 从 `dsh.profile.bundles` 里删掉 `"dsh-session-delete-next"`；
+2. 删掉 `node_modules/dsh-session-delete-next`（或那个 junction）；
 3. 重启 DSH。
 
 `<DSH_HOME>/session-delete/`（回收站数据 + 设置）不会自动删除，想清干净就手动删。

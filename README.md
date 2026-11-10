@@ -1,4 +1,4 @@
-# dsh-session-delete · 删除会话 + 会话回收站
+# dsh-session-delete-next · 删除会话 + 会话回收站
 
 给 DeepSeek Harness 补上「删除会话」：会话行「⋯」菜单里多一项，位置紧跟**归档会话**；
 删掉的会话先进**回收站**，能展开看它用过的附件，确认后再永久删除、连附件一起清掉。
@@ -57,8 +57,8 @@
 ## 安装
 
 ```
-<DSH_HOME>\plugins\dsh-session-delete\                     ← 源码
-<DSH_HOME>\profiles\desktop\node_modules\dsh-session-delete ← junction
+<DSH_HOME>\plugins\dsh-session-delete-next\                     ← 源码
+<DSH_HOME>\profiles\desktop\node_modules\dsh-session-delete-next ← junction
 <DSH_HOME>\profiles\desktop\package.json                    ← dependencies + dsh.profile.bundles
 ```
 
@@ -67,8 +67,8 @@
 **卸载 / 回滚**（两步都要做）：
 
 1. 编辑 `<DSH_HOME>\profiles\desktop\package.json`：`dependencies` 与
-   `dsh.profile.bundles` 里各删掉 `dsh-session-delete` 一行；
-2. 删掉 `<DSH_HOME>\profiles\desktop\node_modules\dsh-session-delete`（junction 本身）。
+   `dsh.profile.bundles` 里各删掉 `dsh-session-delete-next` 一行；
+2. 删掉 `<DSH_HOME>\profiles\desktop\node_modules\dsh-session-delete-next`（junction 本身）。
 
 ## 设置页
 

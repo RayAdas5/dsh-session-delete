@@ -18,7 +18,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const home = process.env.DSH_HOME || resolve(process.env.USERPROFILE || process.env.HOME || '', '.dsh')
-const pluginName = 'dsh-session-delete'
+const pluginName = 'dsh-session-delete-next'
 const profileDir = join(home, 'profiles', 'desktop')
 const linkDir = join(profileDir, 'node_modules', pluginName)
 const sourceDir = join(home, 'plugins', pluginName)
